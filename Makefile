@@ -1,7 +1,14 @@
-default: ssl
-	git clone ${GIT_REPO} /wiki/data
-	gollum --port 8080 --host localhost --config /wiki/config.rb
+default: clone
+	gollum --port 8080 --host localhost --config /wiki/config.rb --base-path /wiki /wiki/data
 
+clone: ssl updater
+	git clone ${GIT_REPO} /wiki/data
+	git config --global push.default matching
+	touch clone
+
+updater:
+    /usr/sbin/cron -f crontab
+    touch updater
 
 ssl:
 	service nginx start
@@ -11,3 +18,7 @@ ssl:
 	mv /wiki/tmp/gollum-ssl.conf /etc/nginx/sites-available/gollum.conf
 	sed -ie "s/<placeholder>/${DOMAIN}/g" /etc/nginx/sites-available/gollum.conf
 	service nginx restart
+	touch ssl
+
+clean:
+    rm ssl clone updater

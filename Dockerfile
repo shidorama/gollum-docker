@@ -8,7 +8,7 @@ ADD config.env /tmp
 RUN cat /tmp/config.env >> /etc/environment
 
 #Installing system tools
-RUN apt-get -y update && apt-get -y install libicu-dev nginx
+RUN apt-get -y update && apt-get -y install libicu-dev nginx cron
 RUN gem install gollum
 RUN gem install github-markdown org-ruby omniauth omnigollum multi_json omniauth-bitbucket
 
