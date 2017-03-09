@@ -21,6 +21,7 @@ RUN ln -s /etc/nginx/sites-available/gollum.conf /etc/nginx/sites-enabled/gollum
 RUN mkdir -p /wiki/webssl
 RUN mkdir -p /wiki/tmp
 RUN cd /usr/local/sbin && wget https://dl.eff.org/certbot-auto && chmod a+x /usr/local/sbin/certbot-auto
+RUN /usr/local/sbin/certbot-auto -n --os-packages-only
 
 # Adding ssl parameters
 ADD gollum-ssl.conf /wiki/tmp/
@@ -29,7 +30,7 @@ ADD gollum-ssl.conf /wiki/tmp/
 RUN mkdir /root/.ssh/
 ADD id_rsa* /root/.ssh/
 ADD known_hosts /root/.ssh/
-RUN chmod go-rwx /root/.ssh/ && mkdir -p /wiki/data/
+RUN chmod -R go-rwx /root/.ssh/ && mkdir -p /wiki/data/
 
 # Setting
 ADD config.rb /wiki/
