@@ -6,11 +6,11 @@ EXPOSE 80
 # Bootstrapping
 RUN mkdir -p /wiki/tmp
 ADD config.env /wiki/tmp/
-RUN cat /wiki/tmp/config.env >> /etc/environment
 RUN mkdir /root/.ssh/
 ADD id_rsa* /root/.ssh/
 ADD check.sh /wiki/tmp
 RUN chmod gou+x /wiki/tmp/check.sh && /wiki/tmp/check.sh
+RUN cat /wiki/tmp/config.env >> /etc/environment
 
 #Installing system tools
 RUN apt-get -y update && apt-get -y install libicu-dev nginx cron
