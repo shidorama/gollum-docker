@@ -1,7 +1,7 @@
 # About
  This is complete All-In-One package for setting-up gollum on dedicated server with nginx as reverse proxy and letsencrypt as automatic ssl solution
  
- # Preparation
+# Preparation
  1. Get dedicated A name on your dns and assign it to servers IP
  1. Open ports 80 and 443 on a servers firewall and check them 
  
