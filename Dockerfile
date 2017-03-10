@@ -6,7 +6,7 @@ EXPOSE 80
 # Bootstrapping
 RUN mkdir -p /wiki/tmp
 RUN mkdir /root/.ssh/
-COPY [ 'config.env', 'check.sh', 'crontab', 'Makefile', 'start.sh', '/wiki/tmp/']
+COPY [ "config.env", "check.sh", "crontab", "Makefile", "start.sh", "/wiki/tmp/" ]
 COPY id_rsa* /root/.ssh/
 COPY known_hosts /root/.ssh/
 COPY gollum.conf /etc/nginx/sites-available
