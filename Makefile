@@ -7,7 +7,7 @@ clone: ssl updater
 	touch clone
 
 updater:
-	/usr/sbin/cron -f crontab
+	/usr/bin/crontab crontab
 	touch updater
 
 ssl:
