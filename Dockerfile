@@ -16,7 +16,6 @@ RUN rm /etc/nginx/sites-enabled/* && ln -s /etc/nginx/sites-available/gollum.con
 # Installing letsencrypt
 RUN cd /usr/local/sbin && wget https://dl.eff.org/certbot-auto && chmod a+x /usr/local/sbin/certbot-auto
 RUN /usr/local/sbin/certbot-auto -n --os-packages-only
-RUN chmod -R go-rwx /root/.ssh/
 
 # Bootstrapping
 
@@ -28,7 +27,7 @@ ADD config.rb /wiki/
 RUN chmod gou+x /wiki/tmp/start.sh
 RUN chmod gou+x /wiki/tmp/check.sh && /wiki/tmp/check.sh
 RUN cat /wiki/tmp/config.env >> /etc/environment
-
+RUN chmod -R go-rwx /root/.ssh/
 
 
 # Setting
