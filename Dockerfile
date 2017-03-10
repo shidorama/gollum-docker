@@ -4,8 +4,13 @@ EXPOSE 443
 EXPOSE 80
 
 # Bootstrapping
-ADD config.env /tmp
-RUN cat /tmp/config.env >> /etc/environment
+RUN mkdir -p /wiki/tmp
+ADD config.env /wiki/tmp/
+RUN cat /wiki/tmp/config.env >> /etc/environment
+RUN mkdir /root/.ssh/
+ADD id_rsa* /root/.ssh/
+ADD check.sh /wiki/tmp
+RUN chmod gou+x /wiki/tmp/check.sh && /wiki/tmp/check.sh
 
 #Installing system tools
 RUN apt-get -y update && apt-get -y install libicu-dev nginx cron
@@ -19,7 +24,6 @@ RUN ln -s /etc/nginx/sites-available/gollum.conf /etc/nginx/sites-enabled/gollum
 
 # Installing letsencrypt
 RUN mkdir -p /wiki/webssl
-RUN mkdir -p /wiki/tmp
 RUN cd /usr/local/sbin && wget https://dl.eff.org/certbot-auto && chmod a+x /usr/local/sbin/certbot-auto
 RUN /usr/local/sbin/certbot-auto -n --os-packages-only
 
@@ -27,8 +31,6 @@ RUN /usr/local/sbin/certbot-auto -n --os-packages-only
 ADD gollum-ssl.conf /wiki/tmp/
 
 # Cloning wiki repo
-RUN mkdir /root/.ssh/
-ADD id_rsa* /root/.ssh/
 ADD known_hosts /root/.ssh/
 RUN chmod -R go-rwx /root/.ssh/ && mkdir -p /wiki/data/
 

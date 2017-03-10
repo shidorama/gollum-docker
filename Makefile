@@ -7,8 +7,8 @@ clone: ssl updater
 	touch clone
 
 updater:
-    /usr/sbin/cron -f crontab
-    touch updater
+	/usr/sbin/cron -f crontab
+	touch updater
 
 ssl:
 	service nginx start
@@ -21,4 +21,4 @@ ssl:
 	touch ssl
 
 clean:
-    rm ssl clone updater
+	rm ssl clone updater
