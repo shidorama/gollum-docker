@@ -5,12 +5,16 @@ EXPOSE 80
 
 # Bootstrapping
 RUN mkdir -p /wiki/tmp
-ADD config.env /wiki/tmp/
 RUN mkdir /root/.ssh/
-ADD id_rsa* /root/.ssh/
-ADD check.sh /wiki/tmp
+COPY [ 'config.env', 'check.sh', 'crontab', 'Makefile', 'start.sh', '/wiki/tmp/']
+COPY id_rsa* /root/.ssh/
+COPY known_hosts /root/.ssh/
+COPY gollum.conf /etc/nginx/sites-available
+ADD config.rb /wiki/
+RUN chmod gou+x /wiki/tmp/start.sh
 RUN chmod gou+x /wiki/tmp/check.sh && /wiki/tmp/check.sh
 RUN cat /wiki/tmp/config.env >> /etc/environment
+
 
 #Installing system tools
 RUN apt-get -y update && apt-get -y install libicu-dev nginx cron
@@ -19,7 +23,6 @@ RUN gem install github-markdown org-ruby omniauth omnigollum multi_json omniauth
 
 # Prepare nginx for proxying
 RUN rm /etc/nginx/sites-enabled/*
-ADD gollum.conf /etc/nginx/sites-available
 RUN ln -s /etc/nginx/sites-available/gollum.conf /etc/nginx/sites-enabled/gollum.conf
 
 # Installing letsencrypt
@@ -31,13 +34,7 @@ RUN /usr/local/sbin/certbot-auto -n --os-packages-only
 ADD gollum-ssl.conf /wiki/tmp/
 
 # Cloning wiki repo
-ADD known_hosts /root/.ssh/
 RUN chmod -R go-rwx /root/.ssh/ && mkdir -p /wiki/data/
 
 # Setting
-ADD config.rb /wiki/
-ADD Makefile /wiki/tmp/
-ADD start.sh /wiki/tmp/
-RUN chmod gou+x /wiki/tmp/start.sh
-
 ENTRYPOINT [ "/wiki/tmp/start.sh" ]
