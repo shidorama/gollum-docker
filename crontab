@@ -1,3 +1,4 @@
+SHELL=/bin/bash
 30 2 * * 1 /usr/local/sbin/certbot-auto renew >> /var/log/le-renew.log
 35 2 * * 1 /etc/init.d/nginx reload
-*/5 * * * * cd /wiki/data && /usr/bin/git push origin master
+*/5 * * * * cd /wiki/data && /usr/bin/git push origin master >> /dev/null 2>&1

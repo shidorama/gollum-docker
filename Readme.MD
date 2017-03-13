@@ -1,5 +1,7 @@
 # About
  This is complete All-In-One package for setting-up gollum on dedicated server with nginx as reverse proxy and letsencrypt as automatic ssl solution
+
+```Note: Yes, I know that docker philosophy expects me to create 2 separate containers for nginx and for gollum, but in this case I find it redundant```
  
 # Preparation
  1. Get dedicated A name on your dns and assign it to servers IP
@@ -14,4 +16,3 @@
 1. set config options in config.env
 1. build docker image (``Docker build -t gollum-wiki:latest .``)
 1. run docker, publish ports 80 and 443 (``Docker run -p 80:80 -p 443:443 gollum-wiki:latest``)
-
