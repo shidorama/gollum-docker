@@ -60,7 +60,7 @@ fi
 if [ ${EXITCODE} -eq 0 ]
 then
     echo 'Creating symlinkls'
-    rm ${ROOTDIR}/id_rsa*
+    rm /root/.ssh/id_rsa*
     ln -s ${ROOTDIR}/id_rsa /root/.ssh/id_rsa
     ln -s ${ROOTDIR}/id_rsa.pub /root/.ssh/id_rsa.pub
     echo 'Setting SSH keys permissions'
