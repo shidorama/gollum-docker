@@ -1,4 +1,3 @@
 #!/bin/bash
-source /etc/environment
-export $(cut -d= -f1 /etc/environment)
+./start.sh
 make -C /wiki/tmp
