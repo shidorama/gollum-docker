@@ -1,6 +1,6 @@
 FROM ruby
 
-EXPOSE 80, 443
+EXPOSE [ "80", "443" ]
 
 #Installing system tools
 RUN apt-get -y update && apt-get -y install libicu-dev nginx cron
@@ -20,15 +20,11 @@ RUN rm /etc/nginx/sites-enabled/* && ln -s /etc/nginx/sites-available/gollum.con
 VOLUME [ "/wiki/certs", "/etc/letsencrypt" ]
 
 # Bootstrapping
-COPY [ "config.env", "gollum-ssl.conf", "check.sh", "crontab", "Makefile", "start.sh", "/wiki/tmp/" ]
-COPY id_rsa* /root/.ssh/
+COPY [ "config.env", "gollum-ssl.conf", "check.sh", "check-ssl.sh", "crontab", "Makefile", "start.sh", "/wiki/tmp/" ]
 COPY known_hosts /root/.ssh/
 COPY gollum.conf /etc/nginx/sites-available/
 ADD config.rb /wiki/
-RUN chmod gou+x /wiki/tmp/start.sh
-RUN chmod gou+x /wiki/tmp/check.sh
-#RUN cat /wiki/tmp/config.env >> /etc/environment
-#RUN chmod -R go-rwx /root/.ssh/
+RUN chmod gou+x /wiki/tmp/*.sh
 
 
 # Setting

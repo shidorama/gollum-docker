@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 EXITCODE=0
 SSL_ROOTDIR=/etc/letsencrypt/live/${DOMAIN}
-SSH_PUBLIC_KEY=${SSL_ROOTDIR}/id_rsa.pub
-SSH_PRIVATE_KEY=${SSL_ROOTDIR}/id_rsa
 SSL_CERTIFICATE=${SSL_ROOTDIR}/fullchain.pem
 SSL_PRIVATE_KEY=${SSL_ROOTDIR}/privkey.pem
 

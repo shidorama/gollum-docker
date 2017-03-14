@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Let's check config overall sanity
-LINES_CONFIGURED=$(egrep -c  ^[a-zA-Z_]+=[\'\"]{1}[^\'\"]+[\'\"]{1}$ /wiki/tmp/config.env)
+LINES_CONFIGURED=$(egrep -c  ^[a-zA-Z_]+=[^\'\"]+$ /wiki/tmp/config.env)
 LINES_NEEDED=6
 EXITCODE=0
 ROOTDIR="/wiki/certs"
+SSH_PUBLIC_KEY=${ROOTDIR}/id_rsa.pub
+SSH_PRIVATE_KEY=${ROOTDIR}/id_rsa
 
 echoerr() { echo "$@" 1>&2; }
 genError() { let "EXITCODE = ${EXITCODE} + 3"; }
@@ -28,9 +30,9 @@ echo "keys exists. Thats a relief"
     else
         echo "setting permissions. Just in case...."
         chmod ou-rwx ${SSH_PUBLIC_KEY} ${SSH_PRIVATE_KEY}
-        SSH_PUBLIC_PR=$(ssh-keygen -y -f ${SSH_PRIVATE_KEY} | cut -d ' ' -f 1,2)
-        SSH_PUBLIC_PU=$(cat ${SSH_PUBLIC_KEY} | cut -d ' ' -f 1,2)
-        if [ ${SSH_PUBLIC_PR} -ne ${SSH_PUBLIC_PU} ]
+        SSH_PUBLIC_PR=$(ssh-keygen -y -f ${SSH_PRIVATE_KEY} | cut -d ' ' -f 2)
+        SSH_PUBLIC_PU=$(cat ${SSH_PUBLIC_KEY} | cut -d ' ' -f 2)
+        if [ "${SSH_PUBLIC_PR}" != "${SSH_PUBLIC_PU}" ]
         then
             genError
             echoerr 'Public and private key does not match'
@@ -46,13 +48,19 @@ else
     fi
     echo 'public ssh key:'
     cat ${ROOTDIR}/id_rsa.pub
-    echo 'Waiting for 10 seconds'
-    sleep 10
+    touch ${ROOTDIR}/lock
+    while [ -f ${ROOTDIR}/lock ]
+    do
+        echo 'Waiting for lock to be removed'
+        sleep 10
+    done
+
 fi
 
 if [ ${EXITCODE} -eq 0 ]
 then
     echo 'Creating symlinkls'
+    rm ${ROOTDIR}/id_rsa*
     ln -s ${ROOTDIR}/id_rsa /root/.ssh/id_rsa
     ln -s ${ROOTDIR}/id_rsa.pub /root/.ssh/id_rsa.pub
     echo 'Setting SSH keys permissions'
