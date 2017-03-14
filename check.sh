@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Let's check config overall sanity
-LINES_CONFIGURED=$(egrep -c  ^[a-zA-Z_]+=[^\'\"]+$ /wiki/tmp/config.env)
-LINES_NEEDED=6
+LINES_CONFIGURED=$(egrep -c  ^[a-zA-Z_]+=.+$ /wiki/tmp/config.env)
+LINES_NEEDED=5
 EXITCODE=0
 ROOTDIR="/wiki/certs"
 SSH_PUBLIC_KEY=${ROOTDIR}/id_rsa.pub

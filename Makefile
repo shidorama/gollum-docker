@@ -11,7 +11,7 @@ updater:
 	touch updater
 
 ssl:
-	./ssl-check.ssh
+	./ssl-check.sh
 	touch ssl
 
 clean:
