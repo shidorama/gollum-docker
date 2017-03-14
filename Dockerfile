@@ -20,7 +20,7 @@ RUN rm /etc/nginx/sites-enabled/* && ln -s /etc/nginx/sites-available/gollum.con
 VOLUME [ "/wiki/certs", "/etc/letsencrypt" ]
 
 # Bootstrapping
-COPY [ "config.env", "gollum-ssl.conf", "check.sh", "check-ssl.sh", "crontab", "Makefile", "start.sh", "/wiki/tmp/" ]
+COPY [ "config.env", "gollum-ssl.conf", "check.sh", "ssl-check.sh", "crontab", "Makefile", "start.sh", "/wiki/tmp/" ]
 COPY known_hosts /root/.ssh/
 COPY gollum.conf /etc/nginx/sites-available/
 ADD config.rb /wiki/
